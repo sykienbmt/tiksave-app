@@ -47,8 +47,8 @@ class StudioGuideBento extends StatelessWidget {
               const SizedBox(height: 9),
               _stepTile(
                 '03',
-                'Tự động lưu bản gốc Không Logo',
-                'Lưu trực tiếp vào Album TikSave trên máy',
+                'Tự động lưu Video hoặc Chọn Ảnh',
+                'Video tự tải ngay; Ảnh mở bảng chọn linh hoạt',
                 TikSaveTheme.neonRose,
               ),
             ],

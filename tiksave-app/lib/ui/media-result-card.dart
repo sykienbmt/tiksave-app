@@ -35,16 +35,6 @@ class MediaResultCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildAuthorHeader(),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              TikSaveTheme.pillBadge(item.qualityBadge, TikSaveTheme.neonCyan),
-              TikSaveTheme.pillBadge('NO WATERMARK', TikSaveTheme.neonEmerald),
-              TikSaveTheme.pillBadge(item.providerName, const Color(0xFFA855F7)),
-            ],
-          ),
           if (item.description.isNotEmpty) ...[
             const SizedBox(height: 12),
             Container(
@@ -93,7 +83,7 @@ class MediaResultCard extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: CircleAvatar(
-            radius: 20,
+            radius: 19,
             backgroundColor: TikSaveTheme.surfaceRecessed,
             backgroundImage: item.authorAvatar.isNotEmpty
                 ? NetworkImage(item.authorAvatar)
@@ -105,25 +95,15 @@ class MediaResultCard extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.authorName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: TikSaveTheme.textPrimary,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 15,
-                ),
-              ),
-              if (item.authorHandle.isNotEmpty)
-                Text(
-                  '@${item.authorHandle}',
-                  style: const TextStyle(color: TikSaveTheme.textSecondary, fontSize: 12.5),
-                ),
-            ],
+          child: Text(
+            item.authorName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: TikSaveTheme.textPrimary,
+              fontWeight: FontWeight.w800,
+              fontSize: 15.5,
+            ),
           ),
         ),
       ],
@@ -169,7 +149,7 @@ class MediaResultCard extends StatelessWidget {
                     bottom: 12,
                     left: 12,
                     child: Text(
-                      'Original Stream • Không dính ID/Watermark',
+                      'Original Stream • Không dính Watermark',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,

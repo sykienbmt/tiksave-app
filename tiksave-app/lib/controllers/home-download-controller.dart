@@ -63,6 +63,11 @@ class HomeDownloadController extends ChangeNotifier {
 
   void updateInputText(String value) => inputText = value;
 
+  void clearMessages() {
+    errorMessage = null;
+    successMessage = null;
+  }
+
   Future<void> pasteFromClipboardAndParse() async {
     final data = await Clipboard.getData(Clipboard.kTextPlain);
     final raw = data?.text ?? '';
@@ -82,7 +87,7 @@ class HomeDownloadController extends ChangeNotifier {
     errorMessage = null;
     successMessage = null;
     isParsing = true;
-    statusMessage = 'Đang phân tích link & lấy luồng gốc không logo...';
+    statusMessage = 'Đang phân tích link TikTok...';
     savedSlideIndices.clear();
     notifyListeners();
 
@@ -90,11 +95,11 @@ class HomeDownloadController extends ChangeNotifier {
       final item = await _parser.parseFromText(rawInput);
       currentItem = item;
       isParsing = false;
-      statusMessage = 'Đã lấy thành công từ ${item.providerName}';
+      statusMessage = '';
       notifyListeners();
 
-      if (triggerAutoDownload) {
-        await (item.isPhotoSlide ? downloadAllSlides() : downloadOriginalVideo());
+      if (triggerAutoDownload && !item.isPhotoSlide) {
+        await downloadOriginalVideo();
       }
     } catch (err) {
       isParsing = false;
@@ -110,10 +115,10 @@ class HomeDownloadController extends ChangeNotifier {
     await _runDownloadTask(
       action: () async {
         final file = await _downloader.downloadVideo(item, onProgress: _onProgress);
-        statusMessage = 'Đang lưu vào Thư viện ảnh (Album TikSave)...';
+        statusMessage = 'Đang lưu video vào Album TikSave...';
         notifyListeners();
         await _gallerySaver.saveVideoFile(file);
-        return 'Đã lưu video chất lượng gốc (Không Logo) vào Album TikSave!';
+        return 'Đã lưu video gốc (Không Logo) vào Album TikSave!';
       },
     );
   }
@@ -131,7 +136,7 @@ class HomeDownloadController extends ChangeNotifier {
         );
         await _gallerySaver.saveImageFile(file);
         savedSlideIndices.add(index);
-        return 'Đã lưu ảnh lẻ #${index + 1} (Chất lượng gốc) vào Album TikSave!';
+        return 'Đã lưu ảnh #${index + 1} vào Album TikSave!';
       },
     );
     activeSlideDownloadingIndex = null;
@@ -150,7 +155,7 @@ class HomeDownloadController extends ChangeNotifier {
         for (var i = 0; i < item.imageUrls.length; i++) {
           savedSlideIndices.add(i);
         }
-        return 'Đã lưu trọn bộ ${files.length} ảnh gốc (Không Logo) vào Album TikSave!';
+        return 'Đã lưu trọn bộ ${files.length} ảnh gốc vào Album TikSave!';
       },
     );
   }
