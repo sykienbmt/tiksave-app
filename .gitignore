@@ -1,0 +1,38 @@
+# Reference repositories & local plans (not part of app repo)
+Douyin_TikTok_Download_API/
+TikTokDownloader/
+plans/
+.claude/
+.gemini/
+
+# Local built APKs at root
+*.apk
+*.ipa
+*.log
+
+# Flutter / Dart / Gradle / Xcode build artifacts
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/android/.gradle/
+**/android/local.properties
+**/android/key.properties
+**/android/*.jks
+**/android/*.keystore
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Environment & IDE files
+.env*
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
