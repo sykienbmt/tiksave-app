@@ -57,9 +57,26 @@ jobs:
             tiksave-app/build/app/outputs/flutter-apk/TikSave-universal.apk
           retention-days: 30
 
+      - name: Publish Android APKs to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
+          name: "TikSave Release (${{ github.ref_type == 'tag' && github.ref_name || 'Latest Build' }})"
+          body: |
+            ### TikSave — Obsidian Neon Bento Studio
+            - **Android (64-bit khuyên dùng)**: `TikSave-arm64-v8a.apk`
+            - **Android (Universal mọi dòng máy)**: `TikSave-universal.apk`
+            - **iOS (Unsigned IPA cho Sideloadly / AltStore / TrollStore)**: `TikSave-unsigned.ipa`
+          prerelease: false
+          files: |
+            tiksave-app/build/app/outputs/flutter-apk/TikSave-arm64-v8a.apk
+            tiksave-app/build/app/outputs/flutter-apk/TikSave-universal.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-ios-ipa:
     name: Build iOS Unsigned IPA (AltStore / Sideloadly / TrollStore)
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -95,37 +112,13 @@ jobs:
           path: tiksave-app/build/ios/iphoneos/TikSave-unsigned.ipa
           retention-days: 30
 
-  publish-release:
-    name: Publish Latest APK & IPA to GitHub Releases
-    needs: [ build-android, build-ios-ipa ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Android APK Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: TikSave-Android-APK
-          path: release-assets
-
-      - name: Download iOS IPA Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: TikSave-iOS-Unsigned-IPA
-          path: release-assets
-
-      - name: Create or Update Latest GitHub Release
+      - name: Publish iOS IPA to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
           name: "TikSave Release (${{ github.ref_type == 'tag' && github.ref_name || 'Latest Build' }})"
-          body: |
-            ### TikSave — Obsidian Neon Bento Studio
-            - **Android (64-bit khuyên dùng)**: `TikSave-arm64-v8a.apk`
-            - **Android (Universal mọi chip)**: `TikSave-universal.apk`
-            - **iOS (Unsigned IPA cho Sideloadly / AltStore / TrollStore)**: `TikSave-unsigned.ipa`
           prerelease: false
           files: |
-            release-assets/TikSave-arm64-v8a.apk
-            release-assets/TikSave-universal.apk
-            release-assets/TikSave-unsigned.ipa
+            tiksave-app/build/ios/iphoneos/TikSave-unsigned.ipa
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
